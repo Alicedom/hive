@@ -1,0 +1,23 @@
+package com.hduser.hive.test;
+
+import org.apache.spark.sql.SparkSession;
+
+public class HiveReadTest {
+
+	public static void main(String[] args) {
+		String warehouse1= "hdfs://localhost:54310/user/hive/warehouse";
+		String warehouse= "/usr/local/spark/conf/hive-site.xml";
+		String connectURL ="jdbc:derby:;databaseName=/home/hduser/derby_folder/metastore_db;create=true";
+		SparkSession spark = SparkSession
+				  .builder()
+				  .master("local[*]")
+				  .appName("Java Spark Hive Example")
+				  .config("javax.jdo.option.ConnectionURL",connectURL)
+				  
+				  .enableHiveSupport()
+				  .getOrCreate();
+
+		spark.sql("show tables").show();
+		spark.sql("SELECT * FROM employees").show();
+	}
+}

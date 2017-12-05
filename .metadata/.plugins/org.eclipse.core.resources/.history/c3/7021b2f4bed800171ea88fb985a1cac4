@@ -1,0 +1,71 @@
+package com.hduser.hive.timeshets;
+
+import java.util.Date;
+
+import org.apache.spark.sql.Dataset;
+import org.apache.spark.sql.Row;
+
+import com.hduser.hive.config.Conf;
+
+public class TimeSheet {
+	
+	
+	public TimeSheet() {
+		
+	}
+	
+	public TimeSheet(String employee_id, int period_id) {
+
+		String start_date_str = getStartDate(period_id);
+		String end_date_str = getEndDate(period_id);
+		
+		String sql_get_time_sheet_employee = "select * from TA_EMPLOYEE_TIMESHEETS "
+				+ " where employee_id="+employee_id
+				+" and WORKING_DATE >"+start_date_str
+				+" and WORKING_DATE <"+end_date_str;
+//		Dataset<Row> time_sheet_period_employee = time_sheet_period.filter();
+
+	}
+	
+	public void getTimesheetPeriod(int period_id) {
+		String start_date_str = getStartDate(period_id);
+		String end_date_str = getEndDate(period_id);
+		String sql_get_time_sheet_period = "select * from TA_EMPLOYEE_TIMESHEETS "
+				+" and WORKING_DATE >"+start_date_str
+				+" and WORKING_DATE <"+end_date_str;		
+		Dataset<Row> time_sheet_period	= Conf.spark.sql(sql_get_time_sheet_period);	
+		time_sheet_period.cache();
+		time_sheet_period.show();
+	}
+	
+	public String getStartDate(int period_id) {
+		String sql_get_start_date= "select START_DATE from PERIODS where PERIOD_ID = "+period_id; 
+		Dataset<Row> start_date= Conf.spark.sql(sql_get_start_date);
+		start_date.show();
+		String start_date_str = start_date.showString(1, 10);
+		String[] start_date_str_list = start_date.columns();
+///		System.out.println(start_date.);
+
+		return start_date_str;
+	}
+	
+	public String getEndDate(int period_id) {
+
+		String sql_get_end_date="select END_DATE from PERIODS where PERIOD_ID = "+period_id;
+		Dataset<Row> end_date= Conf.spark.sql(sql_get_end_date);
+		end_date.show();
+		String end_date_str= end_date.showString(1, 10);
+		
+		return end_date_str;
+	}
+	
+	public static void main(String[] args) {
+		int period_id = 89;
+		TimeSheet timesheet = new TimeSheet();
+//		String start_date = timesheet.getStartDate(period_id);
+//		String end_date = timesheet.getEndDate(period_id);
+		timesheet.getTimesheetPeriod(period_id);
+		Conf.spark.close();
+	}
+
+}

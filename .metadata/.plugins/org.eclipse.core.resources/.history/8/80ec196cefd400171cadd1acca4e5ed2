@@ -1,0 +1,10 @@
+package com.hduser.hive.incomes;
+
+import com.hduser.hive.config.Conf;
+
+public class TongLuong(String employee_id, String period_id) {
+		Conf.spark.sql("select ")
+	}
+	
+
+}

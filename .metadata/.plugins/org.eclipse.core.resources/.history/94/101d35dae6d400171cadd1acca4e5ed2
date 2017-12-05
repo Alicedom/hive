@@ -1,0 +1,21 @@
+package com.hduser.hive;
+
+import org.apache.spark.sql.SparkSession;
+
+public class HiveReadTest {
+
+	public static void main(String[] args) {
+		String warehouse1= "hdfs://localhost:54310/user/hive/warehouse";
+		String warehouse= "/usr/local/spark/conf/hive-site.xml";
+		SparkSession spark = SparkSession
+				  .builder()
+				  .master("local[*]")
+				  .appName("Java Spark Hive Example")
+				  .config("spark.sql.warehouse.dir", warehouse)
+				  .enableHiveSupport()
+				  .getOrCreate();
+
+		spark.sql("show tables").show();
+		spark.sql("SELECT * FROM src").show();
+	}
+}

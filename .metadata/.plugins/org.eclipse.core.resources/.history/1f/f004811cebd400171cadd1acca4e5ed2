@@ -1,0 +1,5 @@
+package com.hduser.hive.config;
+
+public class Conf {
+
+}

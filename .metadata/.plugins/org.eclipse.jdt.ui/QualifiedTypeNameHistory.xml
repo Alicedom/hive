@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="com.hduser.hive.incomes.TongLuong"/>
+<fullyQualifiedTypeName name="org.apache.spark.sql.Row"/>
+<fullyQualifiedTypeName name="java.util.Date"/>
+<fullyQualifiedTypeName name="com.hduser.hive.config.Conf"/>
+<fullyQualifiedTypeName name="com.hduser.hive.timeshets.TimeSheet"/>
+<fullyQualifiedTypeName name="org.apache.spark.sql.Dataset"/>
+</qualifiedTypeNameHistroy>

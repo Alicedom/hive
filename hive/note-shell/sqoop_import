@@ -1,0 +1,52 @@
+sqoop import --connect "jdbc:sqlserver://localhost;databaseName=eHRM_Hamaden" --username sa --password Khanhno1 --driver com.microsoft.sqlserver.jdbc.SQLServerDriver  --table EMPLOYEES  --split-by EMPLOYEE_ID --hive-import -m 1
+
+sqoop import --connect "jdbc:sqlserver://localhost;databaseName=eHRM_Hamaden" --username sa --password Khanhno1 --driver com.microsoft.sqlserver.jdbc.SQLServerDriver  --table EMPLOYEES -m 1
+
+sqoop import-all-tables --connect "jdbc:sqlserver://localhost;databaseName=eHRM_Hamaden" --username sa --password Khanhno1 --driver com.microsoft.sqlserver.jdbc.SQLServerDriver -m 4
+
+sqoop import-all-tables --connect "jdbc:sqlserver://localhost;databaseName=eHRM_Hamaden" --username sa --password Khanhno1
+
+sqoop import --connect jdbc:mysql://localhost/metastore --username root --password 12345678 --table employee --m 1
+
+sqoop import --connect "jdbc:sqlserver://localhost;databaseName=eHRM_Hamaden" --username sa --password Khanhno1 --table EMPLOYEES --hive-import 
+
+sqoop import --connect "jdbc:sqlserver://localhost;database=eHRM_Hamaden" \
+   --username sa  \
+   --password Khanhno1 \
+   --driver   com.microsoft.sqlserver.jdbc.SQLServerDriver \
+   --table    "dbo.EMPLOYEES" \
+   --target-dir  "/tmp/dbo-customer"
+
+
+/////////////////////
+
+sudo su
+
+mkdir -p /var/opt/mssql/backup
+
+mv /home/user1/YourDB.bak /var/opt/mssql/backup/
+
+exit
+
+sqlcmd -S localhost -U SA
+
+
+
+SELECT Name FROM sys.Databases
+GO
+
+SELECT TABLE_NAME FROM eHRM_Hamaden.INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE'
+GO
+
+RESTORE FILELISTONLY FROM DISK = '/var/opt/mssql/backup/eHRM_BackUp_20170717_PayrollDiagram.bak' 
+GO
+
+RESTORE DATABASE eHRM_Hamaden FROM DISK = '/var/opt/mssql/backup/eHRM_BackUp_20170717_PayrollDiagram.bak' WITH MOVE 'eHRM_Hamaden2013.mdf' TO '/var/opt/mssql/data/eHRM_Hamaden.mdf', MOVE '\eHRM_Hamaden2013_1.LDF' TO '/var/opt/mssql/data/eHRM_Hamaden.ldf' 
+GO
+
+
+
+
+
+
+

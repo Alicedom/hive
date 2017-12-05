@@ -1,0 +1,9 @@
+package com.hduser.hive.incomes;
+
+public class TongLuong {
+	public TongLuong() {
+		// TODO Auto-generated constructor stub
+	}
+	
+
+}

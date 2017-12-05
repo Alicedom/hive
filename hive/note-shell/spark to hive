@@ -1,0 +1,25 @@
+sqoop import-all-tables --connect "jdbc:mysql://quickstart.cloudera:3306/retail_db" --username retail_dba --password cloudera --warehouse-dir /user/hive/warehouse/problem6.db --hive-import --hive-database problem6 --create-hive-table --as-textfile;
+
+
+sqoop import --connect "jdbc:sqlserver://localhost;databaseName=eHRM_Hamaden" --username sa --password Khanhno1 --warehouse-dir /user/hive/warehouse/mydb.db --table EMPLOYEES --hive-import --hive-database mydb --create-hive-table --as-textfile;
+
+val emp = spark.read.textFile("hdfs://localhost:54310/user/hduser/EMPLOYEES/*");
+
+
+import org.apache.spark.sql.SparkSession
+
+val spark = SparkSession.builder().master("local[*]").appName("Java Spark Hive Example").config("spark.sql.warehouse.dir", "hdfs://localhost:54310/user/hive/warehouse").enableHiveSupport().getOrCreate();
+
+spark.sql("CREATE TABLE IF NOT EXISTS src (key INT, value STRING) USING hive");
+
+spark.sql("LOAD DATA LOCAL INPATH '/home/hduser/res/kv1.txt' INTO TABLE src");
+
+sql("show databases").show()
+
+sql("show tables").show()
+
+sql("SELECT * FROM src").show()
+
+
+
+

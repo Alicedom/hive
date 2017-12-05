@@ -1,0 +1,19 @@
+package com.hduser.hive;
+
+import org.apache.spark.sql.SparkSession;
+
+public class HiveReadTest {
+
+	public static void main(String[] args) {
+		SparkSession spark = SparkSession
+				  .builder()
+				  .master("local[*]")
+				  .appName("Java Spark Hive Example")
+				  .config("spark.sql.warehouse.dir", "hdfs://localhost:54310/user/hive/warehouse")
+				  .enableHiveSupport()
+				  .getOrCreate();
+
+		spark.sql("SELECT count(*) FROM src").show();
+		spark.sql("SELECT * FROM src").show();
+	}
+}
