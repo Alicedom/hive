@@ -1,4 +1,4 @@
-sqoop import-all-tables --connect "jdbc:mysql://quickstart.cloudera:3306/retail_db" --username retail_dba --password cloudera --warehouse-dir /user/hive/warehouse/problem6.db --hive-import --hive-database problem6 --create-hive-table --as-textfile;
+sqoop import-all-tables --connect "jdbc:mysql://quickstart.cloudera:3306/retail_db" --username retail_dba --password cloudera --warehouse-dir /user/hive/warehouse/problem6.db --hive-import --hive-database problem6 --create-hive-table --as-textfile --exclude-tables sysdiagrams --hive-overwrite;
 
 
 sqoop import --connect "jdbc:sqlserver://localhost;databaseName=eHRM_Hamaden" --username sa --password Khanhno1 --warehouse-dir /user/hive/warehouse/mydb.db --table EMPLOYEES --hive-import --hive-database mydb --create-hive-table --as-textfile;
