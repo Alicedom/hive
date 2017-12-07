@@ -1,0 +1,7 @@
+sqlcmd -S localhost -U sa;
+
+use eHRM_Hamaden
+
+select EMPLOYEE_ID,  max(INCOME_CONFIG_ID) from INCOME_CONFIGS group by EMPLOYEE_ID order by EMPLOYEE_ID
+
+select * from TA_EMPLOYEE_TIMESHEETS as Sheet join TA_WORKING_SHIFTS as Shift on Sheet.ACTUAL_SHIFT_ID = Shift.WORKING_SHIFT_ID join TA_WORKING_TYPES as Type on Sheet.APPROVED_WORKING_TYPE_ID =  Type.WORKING_TYPE_ID

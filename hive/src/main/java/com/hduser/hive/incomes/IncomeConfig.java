@@ -12,12 +12,13 @@ import com.hduser.hive.config.Conf;
 public class IncomeConfig {
 
 	private Dataset<Row> incomeConfigs;
-	
-	public IncomeConfig(int employee_id, int period_id) {
-		getIncomeConfig(period_id);
-		
+	private Dataset<Row> incomeConfigsPerEmployee;
+
+	public IncomeConfig(String start_date, String end_date) {
+		getIncomeConfig(start_date, end_date);
+
 	}
-	
+
 	/*
 	 * start_date (end_date) < END_DATE (end_date)
 	 * and
@@ -25,19 +26,14 @@ public class IncomeConfig {
 	 * and
 	 * start_date < end_date
 	 */
-	public Dataset<Row> getIncomeConfig(int period_id) {
-		String start_date = Period.getStartDate(period_id);
-		String end_date = Period.getEndDate(period_id);
-//???????
-//		String sql_get_income_configs = "select EMPLOYEE_ID, INCOME_ID, CUSTOM_VALUE, INCOME_CONFIG_ID from INCOME_CONFIGS where END_DATE >= "+start_date+ " AND  START_DATE <= "+end_date;
-//		Dataset<Row> incomeConfigsPeriod = Conf.spark.sql(sql_get_income_configs);
-		
+	public Dataset<Row> getIncomeConfig(String start_date, String end_date) {
+
 		String sql_get_income_configs = "select EMPLOYEE_ID, INCOME_ID, CUSTOM_VALUE, INCOME_CONFIG_ID from INCOME_CONFIGS";
 		Dataset<Row> incomeConfigsPeriod = Conf.spark.sql(sql_get_income_configs)
 				.filter(col("END_DATE").geq(start_date))
 				.filter(col("START_DATE").leq(end_date));
-		
-		
+
+
 		Dataset<Row> incomeConfigsMax = incomeConfigsPeriod
 				.groupBy("EMPLOYEE_ID", "INCOME_ID")
 				.max("INCOME_CONFIG_ID")
@@ -52,34 +48,44 @@ public class IncomeConfig {
 				.orderBy("EMPLOYEE_ID")
 				.repartition(4)
 				;
-		
-//		incomeConfigs.cache();
-//		incomeConfigs.write().mode(SaveMode.Overwrite).json("/home/hduser/out/incomeConfigs1");
-//		System.out.println("number "+incomeConfigs.count());
+
+		//		incomeConfigs.cache();
 		return incomeConfigs;
 	}
-	
-	public double getIncomeConfigPerEmployee(int employee_id) {
-		Dataset<Row> incomeConfigsPerEmployee=
+
+	public Dataset<Row>  getIncomeConfigPerEmployee(int employee_id) {
+		incomeConfigsPerEmployee=
 				incomeConfigs.filter(col("EMPLOYEE_ID").equalTo(employee_id));
-		//		basicSalaryPerEmployee.show();
-		incomeConfigsPerEmployee.write().mode(SaveMode.Overwrite).json("/home/hduser/out/incomeConfigsPerEmployee");
+
+		return incomeConfigsPerEmployee;
+	}
+	
+	public double getIncome(int income_id) {
 		double incomeConfigPerEmployeeFirst=
 				incomeConfigsPerEmployee
 				.select("CUSTOM_VALUE")
+				.where(col("INCOME_ID").equalTo(income_id))
 				.as(Encoders.DOUBLE())
 				.first();
 
-		System.out.println(incomeConfigPerEmployeeFirst);
 		return incomeConfigPerEmployeeFirst;
-	}
-	
+
+	}	
+
 	public static void main(String[] args) {
 		int period_id = 89;
 		int employee_id = 5170;
 
-		new IncomeConfig(employee_id, period_id);
-
+		int income_id = 46; //Basic Salary Id
+		String start_date = Period.getStartDate(period_id);
+		String end_date = Period.getEndDate(period_id);
+		
+		IncomeConfig incomeConfig = new IncomeConfig(start_date, end_date);
+		Dataset<Row> incomeConfigsPerEmployee = incomeConfig.getIncomeConfigPerEmployee(employee_id);
+		double basicSalary = incomeConfig.getIncome(income_id);
+		
+		incomeConfigsPerEmployee.write().mode(SaveMode.Overwrite).json("/home/hduser/output/incomeConfigsPerEmployee");
+		System.out.println(basicSalary);
 		Conf.spark.close();
 
 	}

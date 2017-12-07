@@ -20,5 +20,9 @@ public class Period {
 
 		return end_date;
 	}
+	public static void main(String[] args) {
+		System.out.println(Period.getStartDate(89));
+		System.out.println(Period.getEndDate(89));;
+	}
 
 }

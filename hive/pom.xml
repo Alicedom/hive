@@ -32,6 +32,7 @@
 			<artifactId>spark-sql_2.11</artifactId>
 			<version>2.2.0</version>
 		</dependency>
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>

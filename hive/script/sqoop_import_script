@@ -1,0 +1,12 @@
+
+
+for i in   TAXES  EMPLOYEE_DEPENDANTS TA_OVERTIME_SETTING TA_EMPLOYEE_OVERTIMES  LEAVE_REQUESTS EMPLOYEE_RELATIVES INCOME_CONFIGS
+do
+sqoop import --connect "jdbc:sqlserver://localhost;databaseName=eHRM_Hamaden" --username sa --password Khanhno1 --hive-import --create-hive-table --table $i -m 1
+done
+
+ 
+for i in TA_EMPLOYEE_TIMESHEETS TA_WORKING_SHIFTS TA_WORKING_TYPES PERIODS
+do
+sqoop import --connect "jdbc:sqlserver://localhost;databaseName=eHRM_Hamaden" --username sa --password Khanhno1 --hive-import --create-hive-table  --table $i &
+done
